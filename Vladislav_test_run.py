@@ -6,14 +6,30 @@ import matplotlib.pyplot as plt
 from Methods.historical_shares_prices import historical_shares_prices_func
 from Methods.date_shares_prices import date_shares_prices_func
 from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func
+from Methods.figi_converter import figi_converter_share_func
+from Methods.figi_converter import figi_converter_bond_func
+from Methods.figi_converter import figi_converter_currency_func
+
+
+# =====figi конвертер для акций=====
+# На вход идентификатор class_code и тикер акции
+# На выход figi номер акции
+figi_share_number = figi_converter_share_func("TQBR","MOEX")
+figi_bond_number = figi_converter_bond_func("TQOB","SU26241RMFS8")
+figi_currency_number = figi_converter_currency_func("CETS","GLDRUB_TOM")
+print("============figi==============")
+print(figi_share_number)
+print(figi_bond_number)
+print(figi_currency_number)
+print("==========================")
 
 # =====Историческая цена акций======
 # На вход figi номер акции, начальный тайм стемп, конечный таймстеп, интервал c какой переодичностью беруться данные
 # На выход масив таймстемпов, массив цены акции
 x, y = historical_shares_prices_func("BBG004730N88", datetime.datetime(2012, 11, 4, tzinfo=datetime.timezone.utc), now(), CandleInterval.CANDLE_INTERVAL_MONTH)
 
-plt.plot(x, y)
-plt.show()
+# plt.plot(x, y)
+# plt.show()
 
 # =====Стоимость ценной бумаги в момент времени t=====
 # На вход figi номер акции, тайм стемпна момент которого мы хотим узнать цену
