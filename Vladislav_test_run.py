@@ -17,6 +17,6 @@ x, y = historical_shares_prices_func("BBG004730N88", datetime.datetime(2022, 11,
 # =====Стоимость ценной бумаги в момент времени t=====
 # На вход figi номер акции, тайм стемпна момент которого мы хотим узнать цену
 # На выход цена акции на момент времени timestamp
-C = date_shares_prices_func("BBG004730N88", datetime.datetime(2022, 11, 4, tzinfo=datetime.timezone.utc))
+C = date_shares_prices_func("BBG004730N88", datetime.datetime(2023, 11, 1, tzinfo=datetime.timezone.utc))
 
 print(C)
