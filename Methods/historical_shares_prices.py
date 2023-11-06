@@ -19,7 +19,7 @@ def historical_shares_prices_func(figi_number, from_timestamp, to_timestamp, int
             figi = figi_number,
             from_ = from_timestamp,
             to = to_timestamp,
-            interval = CandleInterval.CANDLE_INTERVAL_HOUR,
+            interval = interval, #CandleInterval.CANDLE_INTERVAL_HOUR
         ):
             candles.append(candle)
 
