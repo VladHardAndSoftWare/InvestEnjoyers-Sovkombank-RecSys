@@ -4,7 +4,7 @@ from tinkoff.invest import CandleInterval
 import matplotlib.pyplot as plt
 import numpy as np
 
-from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func
+from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func, dividends_in_interval_func
 from Methods.date_shares_prices import date_shares_prices_func
 from Methods.historical_shares_prices import historical_shares_prices_func
 
@@ -19,3 +19,11 @@ def risk(ticker, from_timestemp, to_timestemp):
     _, y = historical_shares_prices_func(ticker, from_timestemp, to_timestemp, CandleInterval.CANDLE_INTERVAL_DAY)
     std=np.std(np.asarray(y))
     return std
+
+def normalize_list(x: list):
+    x_min=min(x)
+    x_max=max(x)
+    norm=[]
+    for i in x:
+        norm.append((i-x_min)/(x_max-x_min))
+    return norm
