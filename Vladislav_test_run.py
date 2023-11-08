@@ -62,23 +62,25 @@ x, y = historical_bond_coupons_in_interval_func(figi_bond_number, datetime.datet
 # plt.show()
 
 #~~~~~~~~~~~~~~~~~~~~~~~Классы~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# investor_Petr = Investor("Петрович", 55, "Сантехник", 9, 0.9, 10000000, 1000000, 60, "Хуй знает")
-# investor_Petr.create_portfolio(200000)
-# investor_Petr.add_portfolio_invest_instruments(Invest_instrument("MOEX", "TQBR", figi_converter_share_func("TQBR","MOEX"), "share", 1))
+investor_Petr = Investor("Петрович", 55, "Сантехник", 9, 0.9, 10000000, 1000000, 60, "Хуй знает")
+investor_Petr.create_portfolio(200000)
+investor_Petr.add_portfolio_invest_instruments(Invest_instrument("MOEX", "TQBR", figi_converter_share_func("TQBR","MOEX"), "share", 1))
 
-# investor_Elena = Investor(
-#     name= "Елена",
-#     age=30,
-#     profession="CEO",
-#     financial_knowledge=3,
-#     risk_tolerance=0.2,
-#     initial_capital=100,
-#     monthly_investment=10,
-#     planning_horizon=0,
-#     goal="грудь"
-# )
-# Investor.all_investors[1].create_portfolio(200)
+investor_Elena = Investor(
+    name= "Елена",
+    age=30,
+    profession="CEO",
+    financial_knowledge=3,
+    risk_tolerance=0.2,
+    initial_capital=100,
+    monthly_investment=10,
+    planning_horizon=0,
+    goal="грудь"
+)
+Investor.all_investors[1].create_portfolio(200)
+MOEX_Elena = Invest_instrument("MOEX", "TQBR", figi_converter_share_func("TQBR","MOEX"), "share", 100)
+Investor.all_investors[1].add_portfolio_invest_instruments(MOEX_Elena)
 
-# MOEX_Elena = Invest_instrument("MOEX", "TQBR", figi_converter_share_func("TQBR","MOEX"), "share", 100)
+for investor in Investor.all_investors:
+    print(investor.name)
 
-# Investor.all_investors[1].add_portfolio_invest_instruments()
