@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from Methods import invest_tools as it
+from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func, historical_dividends_in_interval_func
+from Methods.date_shares_prices import date_shares_prices_func
 from Methods.historical_shares_prices import historical_shares_prices_func
-from Methods.get_securities_lists import all_rub_shares
 
 #x, y = historical_shares_prices_func("BBG004730N88", datetime.datetime(2023, 11, 1, tzinfo=datetime.timezone.utc), now(), CandleInterval.CANDLE_INTERVAL_DAY)
 
@@ -19,16 +20,9 @@ from Methods.get_securities_lists import all_rub_shares
 #print(it.risk("BBG004730N88", datetime.datetime(2023, 10, 1, tzinfo=datetime.timezone.utc), now()))
 #print(it.profitability_by_n_periods('BBG004730N88', 5, datetime.datetime(2018, 11, 5, tzinfo=datetime.timezone.utc), now()))
 
-shares=all_rub_shares()[0]
+#indicative_papers=["BBG004730JJ5", "BBG01BJBR2W0", "BBG000VJ5YR4"]#
 from_timestamp=datetime.datetime(2018, 11, 1, tzinfo=datetime.timezone.utc)
 to_timestamp=datetime.datetime(2023, 11, 1, tzinfo=datetime.timezone.utc)
-
-risk_list=[]
-for share in shares:
-    x, y = historical_shares_prices_func(share, from_timestamp, to_timestamp, CandleInterval.CANDLE_INTERVAL_WEEK)
-    y_norm=it.normalize_list(y)
-    risk_list.append(np.std(np.asarray(y_norm)))
-    #plt.plot(x, y_norm)
-    #plt.show()
-mean_shares_risk=np.mean(np.asarray(risk_list))
-print(risk_list)   
+#x,y = historical_dividends_in_interval_func("BBG01BJBR2W0", from_timestamp, to_timestamp)
+#plt.plot(x, y)
+#plt.show()

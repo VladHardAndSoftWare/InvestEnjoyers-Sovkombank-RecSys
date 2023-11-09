@@ -6,7 +6,7 @@ import os
 from tinkoff.invest import CandleInterval, Client
 from tinkoff.invest.utils import now
 
-
+#Ф-я работает не только для акций, но и для остальных инструментов 
 def historical_shares_prices_func(figi_number, from_timestamp, to_timestamp, interval):
     
     load_dotenv()
@@ -19,7 +19,7 @@ def historical_shares_prices_func(figi_number, from_timestamp, to_timestamp, int
             figi = figi_number,
             from_ = from_timestamp,
             to = to_timestamp,
-            interval = interval, #CandleInterval.CANDLE_INTERVAL_HOUR
+            interval = interval, #CandleInterval.CANDLE_INTERVAL_WEEK
         ):
             candles.append(candle)
 
