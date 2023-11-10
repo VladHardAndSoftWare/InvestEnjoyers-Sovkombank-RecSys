@@ -11,6 +11,8 @@ from Methods.figi_converter import figi_converter_share_func
 from Methods.figi_converter import figi_converter_bond_func
 from Methods.figi_converter import figi_converter_currency_func
 
+from Methods.get_securities_lists import all_rub_shares
+
 from Models.Investor import Investor
 from Models.Portfolio import Portfolio
 from Models.Invest_instrument import Invest_instrument
@@ -83,4 +85,7 @@ Investor.all_investors[1].add_portfolio_invest_instruments(MOEX_Elena)
 
 for investor in Investor.all_investors:
     print(investor.name)
+    
+    
+print(all_rub_shares())
 

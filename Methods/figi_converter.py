@@ -42,6 +42,8 @@ def figi_converter_currency_func(class_code_value, id_value):
         )
             
     return currency.instrument.figi
+
+
     
     # sum_div = 0
     
