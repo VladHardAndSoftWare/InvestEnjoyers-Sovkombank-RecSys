@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from Methods import invest_tools as it
+from Methods import investor_analysis as ia
 from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func, historical_dividends_in_interval_func
 from Methods.date_shares_prices import date_shares_prices_func
 from Methods.historical_shares_prices import historical_shares_prices_func
 from Methods.get_securities_lists import all_rub_shares, all_rub_bonds
 
-from Models import Investor, Portfolio
+from Models.Investor import Investor
+from Models.Portfolio import Portfolio
 
 from tinkoff.invest import CandleInterval, Client
 from dotenv import load_dotenv
@@ -31,27 +33,46 @@ TOKEN = os.environ['TINKOFF_API_KEY']
 
 #indicative_papers=["BBG004730JJ5", "BBG01BJBR2W0", "BBG000VJ5YR4"]#
 from_timestamp=datetime.datetime(2018, 11, 1, tzinfo=datetime.timezone.utc)
+from_timestamp_1=datetime.datetime(2020, 11, 1, tzinfo=datetime.timezone.utc)
 to_timestamp=datetime.datetime(2023, 11, 1, tzinfo=datetime.timezone.utc)
 
 test_investor=Investor(
-    name= "Елена",
-    age=30,
-    profession="CEO",
-    financial_knowledge=3,
-    #risk_tolerance=0.2,
-    initial_capital=100,
-    monthly_investment=10,
-    planning_horizon=0,
-    goal="грудь"
+    name="Дмитрий",
+    age=23,
+    profession="teacher",
+    financial_knowledge=3.,
+    risk_tolerance=7.,#на самом деле меньше
+    initial_capital=5000000.,
+    monthly_investment=60000,
+    planning_horizon=17,
+    goal=40000000 #не менее 100000 в месяц. С чистой доходностью 1% в месяц, нужно иметь на счете 10 млн руб.
+    #Учитывая среднегодовую инфляцию 8.5%, через 17 лет ему нужно ~40 млн.р 
 )
-
-d=[]
-r=[[1.0, 0.27205180825510006, 0.0]]
-one=[1., 1., 1.0]
-D=[]
-R=[]
+test_investor2=Investor(
+    name="ЛжеДмитрий",
+    age=23,
+    profession="teacher",
+    financial_knowledge=3.,
+    risk_tolerance=7.,
+    initial_capital=100000.,
+    monthly_investment=5000,
+    planning_horizon=37,
+    goal=200000 
+)
+dA=it.profitability_share_by_n_periods('BBG333333333',3,from_timestamp_1,to_timestamp)#есть только за 3 года
+dO=0.05 #it.profitability_bond_by_n_periods('',5,from_timestamp,to_timestamp)
+dZ=it.profitability_currency_by_n_periods('BBG000VJ5YR4',5,from_timestamp,to_timestamp)
+d=[dA, dO, dZ]
+r=[1.0, 0.27205180825510006, 0.0]#Рассчитывается в файле risk_calculation
+one=[1., 1., 1.]
+D=ia.iter_expected_profitability(test_investor)
+R=ia.real_risk_tolerance(test_investor)
 
 A=np.array([d, r, one])
 b=[D, R, 1.]
 
-#alloc=np.linalg.solve(A, b)
+alloc=np.linalg.solve(A, b)
+
+print('Доходности:',d, '   Ожидаемая дох-ть:',D)
+print('Риски:',r, '   Ожидаемый риск:',R)
+print('Аллокация:',alloc)

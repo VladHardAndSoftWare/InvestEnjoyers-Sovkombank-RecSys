@@ -32,7 +32,7 @@ def all_rub_shares():
     
     return figi, ticker, name, isin, sector
 
-#l=all_rub_shares()[0]
+#l=all_rub_shares()
 #print(l)
 
 def all_rub_bonds():
@@ -65,3 +65,25 @@ def all_rub_bonds():
 
 #x=all_rub_bonds()
 #print(x)
+
+def all_rub_currencies():
+    
+    figi = []
+    ticker = []
+    isin = []
+    name = []
+    
+    with Client(TOKEN) as client:
+        currency = client.instruments.currencies(
+            instrument_status=1
+        )
+    for i in currency.instruments:
+        if(i.figi=='BBG000VJ5YR4'):
+            figi.append(i.figi)
+            ticker.append(i.ticker)
+            name.append(i.name)
+            isin.append(i.isin)
+    
+    return figi, ticker, name, isin
+
+print(all_rub_currencies())

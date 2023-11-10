@@ -27,3 +27,4 @@ def date_shares_prices_func(figi_number, timestamp):
 
     return share_price
 
+
