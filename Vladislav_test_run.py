@@ -74,15 +74,20 @@ investor_Elena = Investor(
     name= "Елена",
     age=30,
     profession="CEO",
-    financial_knowledge=3,
+    # financial_knowledge=3,
     risk_tolerance=0.2,
     initial_capital=100,
-    monthly_investment=10,
+    # monthly_investment=10,
     planning_horizon=0,
     goal="грудь"
 )
 Investor.all_investors[1].create_portfolio(200)
-MOEX_Elena = Invest_instrument("MOEX", "TQBR", figi_converter_share_func("TQBR","MOEX"), "share", 100)
+MOEX_Elena = Invest_instrument(
+    ticket="MOEX", 
+    # class_code="TQBR", 
+    # figi = figi_converter_share_func("TQBR","MOEX"), 
+    type = "share", 
+    percent=100)
 Investor.all_investors[1].add_portfolio_invest_instruments(MOEX_Elena)
 
 for investor in Investor.all_investors:
