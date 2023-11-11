@@ -86,4 +86,4 @@ def all_rub_currencies():
     
     return figi, ticker, name, isin
 
-print(all_rub_currencies())
+#print(all_rub_currencies())

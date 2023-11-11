@@ -59,11 +59,12 @@ test_investor2=Investor(
     planning_horizon=37,
     goal=200000 
 )
-dA=it.profitability_share_by_n_periods('BBG333333333',3,from_timestamp_1,to_timestamp)#есть только за 3 года
-dO=0.05 #it.profitability_bond_by_n_periods('',5,from_timestamp,to_timestamp)
+dA=0.35 #it.profitability_share_by_n_periods('BBG333333333',3,from_timestamp_1,to_timestamp)#есть только за 3 года
+dO=0.09 #it.profitability_bond_by_n_periods('',5,from_timestamp,to_timestamp)
 dZ=it.profitability_currency_by_n_periods('BBG000VJ5YR4',5,from_timestamp,to_timestamp)
 d=[dA, dO, dZ]
-r=[1.0, 0.27205180825510006, 0.0]#Рассчитывается в файле risk_calculation
+r0=[0.23972445089345876, 0.1569289386, 0.19128898294386373]#Рассчитывается в файле risk_calculation
+r=it.normalize_list(r0)
 one=[1., 1., 1.]
 D=ia.iter_expected_profitability(test_investor)
 R=ia.real_risk_tolerance(test_investor)
