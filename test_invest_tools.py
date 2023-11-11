@@ -56,7 +56,7 @@ test_investor2=Investor(
     risk_tolerance=7.,
     initial_capital=100000.,
     monthly_investment=5000,
-    planning_horizon=37,
+    #planning_horizon=37,
     goal=200000 
 )
 dA=0.35 #it.profitability_share_by_n_periods('BBG333333333',3,from_timestamp_1,to_timestamp)#есть только за 3 года

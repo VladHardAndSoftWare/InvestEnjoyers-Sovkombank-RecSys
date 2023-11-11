@@ -3,6 +3,7 @@ from tinkoff.invest.utils import now
 from tinkoff.invest import CandleInterval
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import linprog
 
 from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func, historical_dividends_in_interval_func
 from Methods.date_shares_prices import date_shares_prices_func
@@ -34,3 +35,19 @@ def normalize_list(x: list):
     for i in x:
         norm.append((i-x_min)/(x_max-x_min))
     return norm
+
+def Simplex_Method(D1,R1,D2,R2,D,R):
+    obj = [-D1,-D2]
+    
+    lhs_ineq = [[ R1,  R2]]
+    rhs_ineq = [R]  # правая сторона неравенства
+
+    lhs_eq = [[1., 1.]]  # левая сторона равенства
+    rhs_eq = [1.]       # правая сторона равенства
+    
+    bnd = [(0, float("inf")), (0, float("inf"))]  # Границы
+    
+    opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq,
+              A_eq=lhs_eq, b_eq=rhs_eq, bounds=bnd,
+              method="revised simplex")
+    return opt.x[0], opt.x[1], opt.fun
