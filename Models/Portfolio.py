@@ -1,7 +1,7 @@
 class Portfolio:
     portfolio_counter = 1
     
-    def __init__(self, total_investment):
+    def __init__(self, total_investment=None):
         self.portfolio_id = Portfolio.portfolio_counter
         Portfolio.portfolio_counter += 1
         self.total_investment = total_investment
