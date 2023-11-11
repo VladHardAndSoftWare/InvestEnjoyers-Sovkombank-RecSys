@@ -19,7 +19,7 @@ def all_rub_shares():
     sector = []
     
     with Client(TOKEN) as client:
-        shares = client.instruments.(
+        shares = client.instruments.shares(
             instrument_status=1
         )
     for i in shares.instruments:
