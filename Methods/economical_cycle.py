@@ -108,10 +108,11 @@ def economicle_cycle_graph():
 
 	plt.plot(np.array(x)[peaks], rolling_mean.iloc[peaks], 'ro', label='Пики экономического цикла')
 	plt.plot(np.array(x)[extrema_min], rolling_mean.iloc[extrema_min], 'go', label='Спады экономического цикла')
+	plt.plot(period_line, rolling_mean.iloc[extrema_array], 'red', label='Экономический период')
 	# Локатор по конкретным датам
 	# plt.gca().xaxis.set_major_locator(x.DayLocator(bymonthday=[d.day for d in period_line]))
 	# plt.gca().xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
-	# plt.plot(period_line, rolling_mean.iloc[extrema_array], 'red', label='Экономический период')
+	
 	# plt.plot(np.array(x)[extrema_max], rolling_mean.iloc[extrema_max], 'ro')
 	# plt.plot(np.array(x)[valleys], rolling_mean.iloc[valleys], 'go')
 	plt.legend()

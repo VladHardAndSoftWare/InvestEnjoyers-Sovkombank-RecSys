@@ -1,7 +1,7 @@
 class Invest_instrument:
     invest_instrument_counter = 1
     
-    def __init__(self, ticket, class_code, figi, type, percent):
+    def __init__(self, ticket=None, class_code=None, figi=None, type=None, percent=None):
         self.id = Invest_instrument.invest_instrument_counter
         Invest_instrument.invest_instrument_counter += 1
         self.ticket = ticket
