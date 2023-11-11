@@ -10,12 +10,14 @@ from Methods.sum_bond_coupons_in_interval import sum_bond_coupons_in_interval_fu
 from Methods.figi_converter import figi_converter_share_func
 from Methods.figi_converter import figi_converter_bond_func
 from Methods.figi_converter import figi_converter_currency_func
+from Methods.economical_cycle import economicle_cycle_by_timestamp, economicle_cycle_graph
 
 from Methods.get_securities_lists import all_rub_shares
 
 from Models.Investor import Investor
 from Models.Portfolio import Portfolio
 from Models.Invest_instrument import Invest_instrument
+
 
 
 # =====figi конвертер для акций=====
@@ -86,6 +88,7 @@ Investor.all_investors[1].add_portfolio_invest_instruments(MOEX_Elena)
 for investor in Investor.all_investors:
     print(investor.name)
     
-    
-print(all_rub_shares())
+economicle_cycle_graph()   
+# print(all_rub_shares())
+print(economicle_cycle_by_timestamp(now()))
 
