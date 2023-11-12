@@ -1,3 +1,4 @@
 tinkoff-investments==0.2.0b62
 python-dotenv==1.0.0
 SQLAlchemy==2.0.22
+statsmodels==0.13.2
