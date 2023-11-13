@@ -6,13 +6,14 @@ class Investor:
     
     all_investors = []
     
-    def __init__(self, name=None, age=None, profession=None, financial_knowledge=None, risk_tolerance=None, initial_capital=None, monthly_investment=None, planning_horizon=None, goal=None):
+    def __init__(self, name=None, age=None, profession=None, preference=None, financial_knowledge=None, risk_tolerance=None, initial_capital=None, monthly_investment=None, planning_horizon=None, goal=None):
         
         self.investor_id = Investor.investor_counter
         Investor.investor_counter += 1
         self.name = name
         self.age = age
         self.profession = profession
+        self.preference = preference
         self.financial_knowledge = financial_knowledge
         self.risk_tolerance = risk_tolerance
         self.initial_capital = initial_capital

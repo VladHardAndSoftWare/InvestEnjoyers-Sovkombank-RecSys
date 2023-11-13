@@ -13,7 +13,9 @@ def profitability_share_by_n_periods(ticker, n, from_timestemp, to_timestemp):
     Div=sum_dividends_in_interval_func(ticker, from_timestemp, to_timestemp)
     C1=date_shares_prices_func(ticker, to_timestemp)
     C0=date_shares_prices_func(ticker, from_timestemp)
-    middle_profit=(C1-C0+Div)/C0/n
+    if C1!=None and C0!=None: 
+        middle_profit=(C1-C0+Div)/C0/n
+    else: middle_profit=None
     return middle_profit
 
 def profitability_currency_by_n_periods(ticker, n, from_timestemp, to_timestemp):
@@ -50,4 +52,22 @@ def Simplex_Method(D1,R1,D2,R2,D,R):
     opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq,
               A_eq=lhs_eq, b_eq=rhs_eq, bounds=bnd,
               method="revised simplex")
-    return opt.x[0], opt.x[1], opt.fun
+    return opt.x[0], opt.x[1], -opt.fun
+
+def number_actives(allocation, inishial_capital):
+    allocation_sum=[]
+    for i in allocation:
+        allocation_sum.append(i*inishial_capital)
+    number_actives=[]
+    max_price_actives=[50000.,50000., 10000., 10000.]#Рассчитать максимальную стоимость актива
+    for i in range(4):
+        k=int(allocation_sum[i]/max_price_actives[i])
+        if k>10: k=10
+        number_actives.append(k)
+    return number_actives
+
+def preference_adjustment(number_shares, profession, preference):
+    number_profession=int(number_shares*0.2) #20% акций аналогичных отрасли профессии
+    number_preference=int(number_shares*0.3) #30% акций по отраслевым предпочтениям
+    number_common=number_shares-number_profession-number_preference #50 наиболее доходных из всех
+    return number_common, number_profession, number_preference

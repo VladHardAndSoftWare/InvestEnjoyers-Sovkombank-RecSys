@@ -22,8 +22,9 @@ def date_shares_prices_func(figi_number, timestamp):
             interval = CandleInterval.CANDLE_INTERVAL_DAY
         ):
             candles.append(candle)
-
-    share_price = [candle.close.units + candle.close.nano/1000000000 for candle in candles][0]
+    if candles!=[]:
+        share_price = [candle.close.units + candle.close.nano/1000000000 for candle in candles][0]
+    else: share_price=None
 
     return share_price
 
