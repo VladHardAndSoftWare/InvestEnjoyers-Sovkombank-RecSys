@@ -30,8 +30,8 @@ TOKEN = os.environ['TINKOFF_API_KEY']#Ключ для доступа к Тинь
 test_investor=Investor(
     name="Дмитрий",
     age=23,
-    profession='',
-    preference='',
+    profession='consumer',#Если хотите оставить значение пустым, установите None
+    preference='energy',#Если хотите оставить значение пустым, установите None
     financial_knowledge=3.,
     risk_tolerance=7.,
     initial_capital=5000000.,
@@ -63,7 +63,7 @@ def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp
     data_short_bond=[]
     data_long_bond=[]
     
-    #РАССЧЕТ АЛЛОКАЦИИ
+    #АЛЛОКАЦИЯ
     #Ожидаемая ежегодная доходность и предпологаемый риск инвестора
     D=ia.iter_expected_profitability(investor)
     R=ia.real_risk_tolerance(investor)
@@ -102,24 +102,69 @@ def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp
         print('С установленным уровнем риска, доходность портфеля ожидается = ', D_opti,'. Пожалуйста скорректируйте вашу цель или уровень риска.')
         #доходность пересчитать в конечную цель
         return
+    allocation_df=pd.DataFrame({'Процент акций в портфеле': [allocation[0]],
+                                    'Процент краткосрочных облигаций в портфеле': [allocation[1]],
+                                    'Процент драгоценных металлов в портфеле': [allocation[2]],
+                                    'Процент долгосрочных облигаций в портфеле': [allocation[3]],
+        }).T
     
-    #ОПРЕДЕЛЕНИЕ ЧИСЛА РАЗЛИЧНЫХ БУМАГ ОДНОГО ТИПА
+    #ДИВЕРСИФИКАЦИЯ
     number_actives=it.number_actives(allocation, investor.initial_capital)
-    number_shares_by_preferences=it.preference_adjustment(number_actives[0], test_investor.profession, test_investor.preference)
-    
+    number_common, number_profession, number_preference=it.preference_adjustment(number_actives[0], test_investor.profession, test_investor.preference)
+    diversification_df=pd.DataFrame({'Число различных акций по отрасли профессии': [number_profession],
+                                    'Число различных акций по предпочтениям': [number_preference],
+                                    'Число различных акций по наибольшей доходности': [number_common],
+                                    'Общее число различных акций': [number_actives[0]],
+                                    'Общее число различных краткосрочных облигаций': [number_actives[1]],
+                                    'Общее число различных драг. металлов': [number_actives[2]],
+                                    'Общее число различных долгосрочных облигаций': [number_actives[3]],
+        }).T
+
     #CОСТАВЛЕНИЕ ТЕСТОВОГО ПОРТФЕЛЯ
-    #Добавление акций с наилучшей доходностью
-    df=data_share.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
     portfolio=pd.DataFrame(columns=['figi', 'ticker','name','sector', 'persent', 'type'])
-    for i in range(number_actives[0]):
+    #Добавление акций с наилучшей доходностью, по отрасли профессии
+    if test_investor.profession!=None:
+        exept_prof=[]
+        df=data_share.loc[data_share['sector'] == test_investor.profession]
+        df=df.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+        for i in range(number_profession):
+            portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
+                                               df.loc[i, 'sector'], allocation[0]/number_actives[0]*100, 'share']
+            exept_prof.append(df.loc[i, 'figi'])
+        for i in exept_prof:
+            data_share=data_share.loc[data_share['figi'] != i].reset_index().drop(columns=['index'])
+    #Добавление акций с наилучшей доходностью, по предпочтениям
+    if test_investor.preference!=None:
+        exept_prof=[]
+        df=data_share.loc[data_share['sector'] == test_investor.preference]
+        df=df.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+        for i in range(number_preference):
+            portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
+                                               df.loc[i, 'sector'], allocation[0]/number_actives[0]*100, 'share']
+            exept_prof.append(df.loc[i, 'figi'])
+        for i in exept_prof:
+            data_share=data_share.loc[data_share['figi'] != i].reset_index().drop(columns=['index'])
+    #Добавление остальных акций с наилучшей доходностью
+    df=data_share.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+    for i in range(number_common):
         portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                df.loc[i, 'sector'], allocation[0]/number_actives[0]*100, 'share']
+    #Добавление краткосрочных облигаций с наилучшей доходностью
+    
+    
+    
+    #Добавление драгоценных металлов с наилучшей доходностью
+    
+    
+    #Добавление долгосрочных государственных облигаций с наилучшей доходностью
+    
+    
+    
 
-    print(portfolio)    
-        
-    portfolio=[]
-    diversification=[]
-    return portfolio, allocation, D_opti, diversification
+    return portfolio, allocation_df, D_opti, diversification_df
 
-print(recommendation_model(test_investor, cycle, from_t, to_t))
-
+portfolio, allocation_df, D_opti, diversification_df = recommendation_model(test_investor, cycle, from_t, to_t)
+print("\nОЖИДАЕМАЯ ГОДОВАЯ ДОХОДНОСТЬ ПОРТФЕЛЯ, % = ",D_opti*100)
+print("\nРЕКОМЕНДУЕМАЯ АЛЛОКАЦИЯ\n",allocation_df)
+print("\nРЕКОМЕНДУЕМАЯ ДИВЕРСИФИКАЦИЯ\n",diversification_df)
+print("\nПРИМЕР ПОРТФЕЛЯ\n",portfolio)

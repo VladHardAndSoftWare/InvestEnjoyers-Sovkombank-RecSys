@@ -59,7 +59,7 @@ def number_actives(allocation, inishial_capital):
     for i in allocation:
         allocation_sum.append(i*inishial_capital)
     number_actives=[]
-    max_price_actives=[50000.,50000., 10000., 10000.]#Рассчитать максимальную стоимость актива
+    max_price_actives=[50000.,50000., 50000., 50000.]#Рассчитать максимальную стоимость актива*10
     for i in range(4):
         k=int(allocation_sum[i]/max_price_actives[i])
         if k>10: k=10
@@ -67,7 +67,9 @@ def number_actives(allocation, inishial_capital):
     return number_actives
 
 def preference_adjustment(number_shares, profession, preference):
-    number_profession=int(number_shares*0.2) #20% акций аналогичных отрасли профессии
-    number_preference=int(number_shares*0.3) #30% акций по отраслевым предпочтениям
+    if profession!=None: number_profession=int(number_shares*0.2) #20% акций аналогичных отрасли профессии
+    else: number_profession=0
+    if preference!=None:number_preference=int(number_shares*0.3) #30% акций по отраслевым предпочтениям
+    else: number_preference=0
     number_common=number_shares-number_profession-number_preference #50 наиболее доходных из всех
     return number_common, number_profession, number_preference
