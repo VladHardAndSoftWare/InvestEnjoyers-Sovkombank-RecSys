@@ -1,1 +1,0 @@
-# sovkombank-recsys
