@@ -8,7 +8,6 @@ import pandas as pd
 
 from Methods import invest_tools as it
 from Methods import investor_analysis as ia
-import risk_calculation as rc
 from Methods import get_data_instruments as gd
 from Methods.sum_dividends_in_interval import sum_dividends_in_interval_func, historical_dividends_in_interval_func
 from Methods.date_shares_prices import date_shares_prices_func
@@ -58,12 +57,7 @@ cycle_negative_factor=0.3
 
 #ОСНОВНАЯ ФУНКЦИЯ
 def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp):
-    #ЗАГРУЗКА ВСЕХ ДОСТУПНЫХ БУМАГ. РАССЧЕТ ИХ ДОХОДНОСТЕЙ И РИСКОВ
-    #data_share=pd.read_csv('Data/share_data1.csv') #gd.get_data_share(from_timestamp, to_timestamp, N)
-    #data_metals=pd.read_csv('Data/metals_data1.csv') #gd.get_data_metals(from_timestamp, to_timestamp, N)
-    #data_short_bonds=pd.read_csv('Data/short_bonds_data1.csv') #gd.get_data_metals(from_timestamp, to_timestamp, N)
-    #data_long_bond=pd.read_csv('Data/gov_bond_data1.csv') #gd.get_data_long_bond(from_timestamp, to_timestamp, N)
-    
+    #ЗАГРУЗКА ВСЕХ ДОСТУПНЫХ БУМАГ. РАССЧЕТ ИХ ДОХОДНОСТЕЙ И РИСКОВ 
     print('Расчет доходностей акций. Ожидайте ~3 мин')
     data_share=gd.get_data_share(from_timestamp, to_timestamp, N)
     print('Расчет доходностей металлов')

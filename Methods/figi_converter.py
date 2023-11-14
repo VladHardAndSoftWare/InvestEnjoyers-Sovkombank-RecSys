@@ -43,11 +43,3 @@ def figi_converter_currency_func(class_code_value, id_value):
             
     return currency.instrument.figi
 
-
-    
-    # sum_div = 0
-    
-    # for dividend in dividends.dividends:
-    #     sum_div += dividend.dividend_net.units + dividend.dividend_net.nano/1000000000
-
-    # return sum_div

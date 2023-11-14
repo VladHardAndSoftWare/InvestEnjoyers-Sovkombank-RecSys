@@ -188,4 +188,3 @@ def economicle_cycle_by_timestamp(timestamp_el : datetime.datetime):
 			return period.period_type_ru
 		# print(period.value)
 
-# economicle_cycle_graph()

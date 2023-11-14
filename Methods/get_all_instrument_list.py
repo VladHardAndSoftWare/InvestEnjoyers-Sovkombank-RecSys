@@ -31,6 +31,3 @@ def all_rub_shares():
             sector.append(i.sector)
     
     return figi, ticker, name, isin, sector
-
-#l=all_rub_shares()[0]
-#print(l)
