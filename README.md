@@ -3,7 +3,7 @@
 Работу модели можно посмотреть в файле “recommendation_model.py”.
 
 Что бы установить необходимые библиотеки, выполните команду:
-```python
+```bash
 python -m pip install -r requirements.txt
 ```
 
