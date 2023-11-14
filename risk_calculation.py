@@ -8,7 +8,7 @@ import time
 
 from Methods import invest_tools as it
 from Methods.historical_shares_prices import historical_shares_prices_func
-from Methods.get_securities_lists import all_rub_shares, all_rub_bonds
+from Methods.get_securities_lists import all_rub_shares, all_gov_bonds
 
 #from_timestamp=datetime.datetime(2018, 11, 1, tzinfo=datetime.timezone.utc)
 #to_timestamp=datetime.datetime(2023, 11, 1, tzinfo=datetime.timezone.utc)
@@ -31,7 +31,7 @@ def find_middle_risk_shares(from_timestamp, to_timestamp):
     return mean_shares_risk 
 
 def find_middle_risk_government_bonds(from_timestamp, to_timestamp):
-    bonds,_,bonds_name,_,_,_,bonds_duration=all_rub_bonds()
+    bonds,_,bonds_name,_,_,_,bonds_duration=all_gov_bonds()
     risk_list=[]
     k=1
     for bond in bonds:

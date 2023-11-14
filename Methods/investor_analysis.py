@@ -39,9 +39,9 @@ def native_expected_profitability(S0, Sr, S, H, T):
 
 #Расчет допустимого риска для инвестора
 #Cамооценка уровня риска[1:10], Уровень знаний, опыт[1:5]
-def real_risk_tolerance(investor: Investor):
-    min_risk=0#Минимальный риск по всем типам бумаг(нормированный)
-    max_risk=1#Максимальный
+def real_risk_tolerance(investor: Investor, R_max, R_min):
+    min_risk=R_min #Минимальный риск по всем типам бумаг
+    max_risk=R_max #Максимальный
     k=0.5+0.1*investor.financial_knowledge #Поправка на знания инвестора
-    r=(max_risk-min_risk)/10*k*investor.risk_tolerance 
+    r=min_risk+(max_risk-min_risk)/10*k*investor.risk_tolerance 
     return r

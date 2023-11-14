@@ -35,7 +35,7 @@ def all_rub_shares():
 #l=all_rub_shares()
 #print(l)
 
-def all_rub_bonds():
+def all_gov_bonds():
     
     figi = []
     ticker = []
@@ -50,8 +50,7 @@ def all_rub_bonds():
             instrument_status=1
         )
     for i in bonds.instruments:
-        if(i.currency=='rub' and i.sector=='government'):
-            print(i)
+        if(i.currency=='rub' and i.name.__contains__('ОФЗ')):
             figi.append(i.figi)
             ticker.append(i.ticker)
             name.append(i.name)
@@ -63,10 +62,10 @@ def all_rub_bonds():
     
     return figi, ticker, name, isin, state_reg_date, maturity_date, duration
 
-#x=all_rub_bonds()
+#x=all_gov_bonds()
 #print(x)
 
-def all_rub_currencies():
+def all_rub_metals():
     
     figi = []
     ticker = []
@@ -78,12 +77,42 @@ def all_rub_currencies():
             instrument_status=1
         )
     for i in currency.instruments:
-        if(i.figi=='BBG000VJ5YR4'):
+        if(i.name=='Золото' or i.name=='Серебро'): #Единственные торгующиеся драг. металлы(По крайней мере по запросу к API)
             figi.append(i.figi)
             ticker.append(i.ticker)
             name.append(i.name)
-            isin.append(i.isin)
     
-    return figi, ticker, name, isin
+    return figi, ticker, name
 
-#print(all_rub_currencies())
+#print(all_rub_metals())
+def all_short_bonds():
+    
+    figi = []
+    ticker = []
+    isin = []
+    name = []
+    maturity_date = []
+    state_reg_date = []
+    duration = []
+    
+    with Client(TOKEN) as client:
+        bonds = client.instruments.bonds(
+            instrument_status=1
+        )
+    for i in bonds.instruments:
+        if(i.currency=='rub'):
+            dur=int((i.maturity_date-i.state_reg_date).days/365)
+            if(dur<=2 and dur>=0):
+                figi.append(i.figi)
+                ticker.append(i.ticker)
+                name.append(i.name)
+                isin.append(i.isin)
+                maturity_date.append(i.maturity_date)
+                state_reg_date.append(i.state_reg_date)
+                duration.append(dur)
+            #sector.append(i.sector)
+    
+    return figi, ticker, name, isin, state_reg_date, maturity_date, duration
+
+#x=all_short_bonds()
+#print(x)
