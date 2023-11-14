@@ -39,7 +39,7 @@ def get_data_share(from_timestamp, to_timestamp, N):
         #k+=1
     data['yarly_mean_profiit']=yarly_mean_profiit
     data['risk']=risk
-    data=data.dropna().reset_index().drop(columns=['Unnamed: 0', 'index'])
+    data=data.dropna().reset_index().drop(columns=['index'])
     
     return data
 

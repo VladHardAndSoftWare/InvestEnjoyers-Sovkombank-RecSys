@@ -30,8 +30,8 @@ TOKEN = os.environ['TINKOFF_API_KEY']#Ключ для доступа к Тинь
 test_investor=Investor(
     name="Дмитрий",
     age=23,
-    profession='consumer',#Если хотите оставить значение пустым, установите None
-    preference='energy',#Если хотите оставить значение пустым, установите None
+    profession='consumer',#Пустое = None
+    preference='energy',#Пустое = None
     financial_knowledge=5.,
     risk_tolerance=9.,
     initial_capital=5000000.,
@@ -44,6 +44,7 @@ test_investor=Investor(
 #Тестовый временной промежуток. Портфель собирается в момент to_t
 from_t=datetime.datetime(2022, 11, 1, tzinfo=datetime.timezone.utc)
 to_t=datetime.datetime(2023, 11, 1, tzinfo=datetime.timezone.utc)
+N=1
 
 #Текущий экономический цикл: 
 #   Экономика растет? - Да(1)/Нет(0)
@@ -58,10 +59,19 @@ cycle_negative_factor=0.3
 #ОСНОВНАЯ ФУНКЦИЯ
 def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp):
     #ЗАГРУЗКА ВСЕХ ДОСТУПНЫХ БУМАГ. РАССЧЕТ ИХ ДОХОДНОСТЕЙ И РИСКОВ
-    data_share=pd.read_csv('Data/share_data1.csv') #gd.get_data_share(from_timestamp, to_timestamp, N)
-    data_metals=pd.read_csv('Data/metals_data1.csv') #gd.get_data_metals(from_timestamp, to_timestamp, N)
-    data_short_bonds=pd.read_csv('Data/short_bonds_data1.csv') #gd.get_data_metals(from_timestamp, to_timestamp, N)
-    data_long_bond=pd.read_csv('Data/gov_bond_data1.csv') #gd.get_data_long_bond(from_timestamp, to_timestamp, N)
+    #data_share=pd.read_csv('Data/share_data1.csv') #gd.get_data_share(from_timestamp, to_timestamp, N)
+    #data_metals=pd.read_csv('Data/metals_data1.csv') #gd.get_data_metals(from_timestamp, to_timestamp, N)
+    #data_short_bonds=pd.read_csv('Data/short_bonds_data1.csv') #gd.get_data_metals(from_timestamp, to_timestamp, N)
+    #data_long_bond=pd.read_csv('Data/gov_bond_data1.csv') #gd.get_data_long_bond(from_timestamp, to_timestamp, N)
+    
+    print('Расчет доходностей акций. Ожидайте ~3 мин')
+    data_share=gd.get_data_share(from_timestamp, to_timestamp, N)
+    print('Расчет доходностей металлов')
+    data_metals=gd.get_data_metals(from_timestamp, to_timestamp, N)
+    print('Расчет доходностей облигаций. Ожидайте ~2 мин')
+    data_short_bonds=gd.get_data_metals(from_timestamp, to_timestamp, N)
+    print('Расчет доходностей государственных облигаций. Ожидайте ~2 мин')
+    data_long_bond=gd.get_data_long_bond(from_timestamp, to_timestamp, N)
     
     #АЛЛОКАЦИЯ
     #Ожидаемые риски и доходности типов бумаг
@@ -128,7 +138,7 @@ def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp
     if test_investor.profession!=None:
         exept_prof=[]
         df=data_share.loc[data_share['sector'] == test_investor.profession]
-        df=df.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+        df=df.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['index'])
         for i in range(number_profession):
             portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                df.loc[i, 'sector'], allocation[0]/number_actives[0]*100, 'share']
@@ -140,7 +150,7 @@ def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp
     if test_investor.preference!=None:
         exept_prof=[]
         df=data_share.loc[data_share['sector'] == test_investor.preference]
-        df=df.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+        df=df.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['index'])
         for i in range(number_preference):
             portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                df.loc[i, 'sector'], allocation[0]/number_actives[0]*100, 'share']
@@ -149,25 +159,25 @@ def recommendation_model(investor: Investor, cycle, from_timestamp, to_timestamp
             data_share=data_share.loc[data_share['figi'] != i].reset_index().drop(columns=['index'])
     
     #Добавление остальных акций с наилучшей доходностью
-    df=data_share.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+    df=data_share.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['index'])
     for i in range(number_common):
         portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                df.loc[i, 'sector'], allocation[0]/number_actives[0]*100, 'share']
     
     #Добавление краткосрочных облигаций с наилучшей доходностью
-    df=data_short_bonds.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+    df=data_short_bonds.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['index'])
     for i in range(number_actives[1]):
         portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                'short', allocation[1]/number_actives[1]*100, 'bond']
     
     #Добавление драгоценных металлов с наилучшей доходностью
-    df=data_metals.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+    df=data_metals.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['index'])
     for i in range(number_actives[2]):
         portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                'precious metals', allocation[2]/number_actives[2]*100, 'currency']
     
     #Добавление долгосрочных государственных облигаций с наилучшей доходностью
-    df=data_long_bond.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['Unnamed: 0', 'index'])
+    df=data_long_bond.sort_values(by = ['yarly_mean_profiit'], ascending = [ False ]).reset_index().drop(columns=['index'])
     for i in range(number_actives[3]):
         portfolio.loc[len(portfolio.index)] = [df.loc[i, 'figi'], df.loc[i, 'ticker'], df.loc[i, 'name'],
                                                'governments', allocation[3]/number_actives[3]*100, 'bond']
