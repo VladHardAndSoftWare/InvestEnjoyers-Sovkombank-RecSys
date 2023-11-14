@@ -16,7 +16,7 @@ python -m pip install -r requirements.txt
 Для загрузки котировок и бумаг используется TincoffAPI. Чтобы подключиться к нему, вам нужно создать личный файл .env и прописать в нем соответствующий токен в формате:
 
 ```python
-TINKOFF_API_KEY='’
+TINKOFF_API_KEY=''
 ```
 
 Создать личный токен можно на странице: [https://www.tinkoff.ru/invest/settings/](https://www.tinkoff.ru/invest/settings/)
