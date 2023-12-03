@@ -31,7 +31,7 @@ test_investor=Investor(
     age=23,
     profession='consumer',#Пустое = None
     preference='energy',#Пустое = None
-    financial_knowledge=5.,
+    financial_knowledge=4.,
     risk_tolerance=9.,
     initial_capital=5000000.,
     monthly_investment=60000,
